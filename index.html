@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Nos vamos a ver el viernes?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffe4e1;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff69b4;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.3s;
+        }
+        #yesButton {
+            background-color: #ff69b4;
+            color: white;
+        }
+        #yesButton:hover {
+            background-color: #ff1493;
+        }
+        #noButton {
+            background-color: #f44336;
+            color: white;
+        }
+        #noButton:hover {
+            background-color: #e53935;
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff69b4;
+            transform: rotate(45deg);
+            animation: float 2s ease-in-out infinite;
+        }
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff69b4;
+            border-radius: 50%;
+        }
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+        .heart::after {
+            left: 10px;
+            top: 0;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="question">¿Nos vamos a ver el viernes?</h1>
+        <button id="yesButton">Sí</button>
+        <button id="noButton">No</button>
+    </div>
+
+    <script>
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const question = document.getElementById('question');
+
+        yesButton.addEventListener('click', () => {
+            window.scrollTo(0, 0);
+            question.textContent = 'Sabía que aceptarías';
+            yesButton.style.display = 'none';
+            noButton.style.display = 'none';
+            createHearts();
+        });
+
+        noButton.addEventListener('click', () => {
+            const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
+            const newSize = currentSize * 1.5;
+            if (newSize < window.innerWidth / 2) {
+                yesButton.style.fontSize = newSize + 'px';
+            }
+        });
+
+        function createHearts() {
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.top = Math.random() * window.innerHeight + 'px';
+                document.body.appendChild(heart);
+                setTimeout(() => {
+                    heart.remove();
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
