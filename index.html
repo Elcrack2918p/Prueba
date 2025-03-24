@@ -3,127 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¿Nos vamos a ver el viernes?</title>
+    <title>¿Vamos a comer ya?</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #ffe4e1;
-            color: #333;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            text-align: center;
+            background: linear-gradient(to right, #a1c4fd, #c2e9fb);
             overflow: hidden;
         }
         .container {
-            text-align: center;
-        }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            color: #ff69b4;
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         button {
-            padding: 15px 30px;
-            font-size: 18px;
             margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: transform 0.1s, background-color 0.3s;
+            transition: background-color 0.3s;
         }
-        #yesButton {
-            background-color: #ff69b4;
+        button:hover {
+            background-color: #1e90ff;
             color: white;
         }
-        #yesButton:hover {
-            background-color: #ff1493;
-        }
-        #noButton {
-            background-color: #f44336;
-            color: white;
-        }
-        #noButton:hover {
-            background-color: #e53935;
-        }
-        .heart {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #ff69b4;
-            transform: rotate(45deg);
-            animation: float 2s ease-in-out infinite;
-        }
-        .heart::before,
-        .heart::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #ff69b4;
-            border-radius: 50%;
-        }
-        .heart::before {
-            top: -10px;
-            left: 0;
-        }
-        .heart::after {
-            left: 10px;
-            top: 0;
+        #message, #secondMessage, #finalMessage {
+            display: none;
         }
         @keyframes float {
-            0% {
-                transform: translateY(0) rotate(45deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) rotate(45deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #hearts div {
+            font-size: 24px;
+            position: absolute;
+            animation: float 2s ease-in-out infinite;
+        }
+        #finalMessage h1, #initialQuestion, #message h1, #secondMessage h1 {
+            animation: fadeIn 1s ease-in-out;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 id="question">¿Nos vamos a ver el viernes?</h1>
-        <button id="yesButton">Sí</button>
-        <button id="noButton">No</button>
-    </div>
+        <h1 id="initialQuestion">¿Vamos a comer ya?</h1>
+        <button id="noButton" onclick="noButton()">No</button>
+        <div id="message">
+            <h1>Te daré otra oportunidad</h1>
+            <button onclick="okButton()">Ok</button>
+        </div>
+        <div id="secondMessage">
+            <h1>¿Vamos a comer ya?</h1>
+            <button onclick="yesButton()">Sí</button>
+            <button onclick="noButton()">No</button>
+        </div>
+        <div id="finalMessage">
+            <h1>Yo sabía que dirías que sí</h1>
+            <div id="hearts"></div>
+        </div>
+        </div>
 
-    <script>
-        const yesButton = document.getElementById('yesButton');
-        const noButton = document.getElementById('noButton');
-        const question = document.getElementById('question');
+        <script>
+        function noButton() {
+            document.getElementById('initialQuestion').style.display = 'none';
+            document.getElementById('noButton').style.display = 'none';
+            document.getElementById('message').style.display = 'block';
+        }
 
-        yesButton.addEventListener('click', () => {
-            window.scrollTo(0, 0);
-            question.textContent = 'Sabía que aceptarías';
-            yesButton.style.display = 'none';
-            noButton.style.display = 'none';
-            createHearts();
-        });
+        function okButton() {
+            document.getElementById('message').style.display = 'none';
+            document.getElementById('secondMessage').style.display = 'block';
+        }
 
-        noButton.addEventListener('click', () => {
-            const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
-            const newSize = currentSize * 1.5;
-            if (newSize < window.innerWidth / 2) {
-                yesButton.style.fontSize = newSize + 'px';
-            }
-        });
+        function yesButton() {
+            document.getElementById('secondMessage').style.display = 'none';
+            document.getElementById('finalMessage').style.display = 'block';
+            showHearts();
+        }
 
-        function createHearts() {
+        function showHearts() {
+            const heartsContainer = document.getElementById('hearts');
             for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.style.left = Math.random() * window.innerWidth + 'px';
-                heart.style.top = Math.random() * window.innerHeight + 'px';
-                document.body.appendChild(heart);
-                setTimeout(() => {
-                    heart.remove();
-                }, 2000);
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = Math.random() * 100 + 'vh';
+            heart.style.animationDelay = `${Math.random() * 2}s`;
+            heartsContainer.appendChild(heart);
             }
         }
-    </script>
-</body>
-</html>
+        </script>
+    </body>
+    </html>
